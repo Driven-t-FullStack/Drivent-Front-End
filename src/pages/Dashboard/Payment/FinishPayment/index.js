@@ -1,5 +1,11 @@
+import ChosenTicket from './ChosenTicket';
 import PaymentForm from './PaymentForm';
 
 export default function FinishPayment() {
-  return <PaymentForm />;
+  return (
+    <>
+      <ChosenTicket />
+      <PaymentForm />
+    </>
+  );
 }
