@@ -6,6 +6,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 
+import FinishPayment from './FinishPayment';
+
 export default function Payment() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [modality, setModality] = useState(null);
