@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import HotelOption from './HotelOption';
 import { useState } from 'react';
 
-function HotelContainer({ text, options, hotel, setHotel, setHotelPrice }) {
+function HotelContainer({ text, options, setHotel, setHotelPrice }) {
   const [selected, setSelected] = useState(false);
 
   return (
@@ -15,7 +15,6 @@ function HotelContainer({ text, options, hotel, setHotel, setHotelPrice }) {
             price={o.price}
             setSelected={setSelected}
             selected={selected}
-            hotel={hotel}
             setHotel={setHotel}
             setHotelPrice={setHotelPrice}
             key={i}

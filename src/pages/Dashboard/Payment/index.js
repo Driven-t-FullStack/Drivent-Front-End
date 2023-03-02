@@ -1,18 +1,18 @@
 import Title from '../../../components/Dashboard/Title';
 import ModalityContainer from '../../../components/Dashboard/Payments/ModalityContainer';
 import HotelContainer from '../../../components/Dashboard/Payments/HotelContainer';
-import Button from '../../../components/Dashboard/Button';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useEffect } from 'react';
+import Button from '../../../components/Form/Button';
 
-import FinishPayment from './FinishPayment';
+// import FinishPayment from './FinishPayment';
 
 export default function Payment() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [modality, setModality] = useState(null);
   const [modalityPrice, setModalityPrice] = useState(0);
-  const [hotel, setHotel] = useState(false);
+  const [hotel, setHotel] = useState(null);
   const [hotelPrice, setHotelPrice] = useState(0);
   useEffect(() => {
     if (hotel) {
@@ -24,10 +24,14 @@ export default function Payment() {
 
   useEffect(() => {
     if (modality === 'Online' || modality === null) {
-      setHotel(false);
+      setHotel(null);
       setHotelPrice(0);
     }
   }, [modality]);
+
+  function submitPaymentInfos() {
+    
+  }
 
   return (
     <>
@@ -49,7 +53,6 @@ export default function Payment() {
             { title: 'Sem Hotel', price: 0 },
             { title: 'Com Hotel', price: 350 },
           ]}
-          hotel={hotel}
           setHotel={setHotel}
           setHotelPrice={setHotelPrice}
         />
@@ -57,10 +60,19 @@ export default function Payment() {
       {modality === 'Online' && (
         <>
           <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
-          <Button>RESERVAR INGRESSO</Button>
+          <Button type="submit" onSubmit={() => submitPaymentInfos()}>
+            RESERVAR INGRESSO
+          </Button>
         </>
       )}
-      {/* {HotelClick && } */}
+      {hotel !== null && (
+        <>
+          <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
+          <Button type="submit" onSubmit={() => submitPaymentInfos()}>
+            RESERVAR INGRESSO
+          </Button>
+        </>
+      )}
     </>
   );
 }

@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-function HotelOption({ title, price, setSelected, selected, index, setHotelPrice, hotel, setHotel }) {
-  console.log(selected, 'selecionado');
+function HotelOption({ title, price, setSelected, selected, index, setHotelPrice, setHotel }) {
   function handleClick(index) {
-    if (!selected || selected !== index) {
+    if (selected === false || selected !== index) {
       setSelected(index);
       if (index === 1) {
         setHotel(true);
@@ -14,7 +13,7 @@ function HotelOption({ title, price, setSelected, selected, index, setHotelPrice
       }
     } else {
       setSelected(false);
-      setHotel(false);
+      setHotel(null);
       setHotelPrice(0);
     }
   }
