@@ -9,3 +9,13 @@ export async function getUserTicket(token) {
 
   return response;
 }
+
+export async function createPayment(body, token) {
+  const response = await api.post('/payments/process', body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response;
+}

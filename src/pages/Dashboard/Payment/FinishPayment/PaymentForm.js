@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import styled from 'styled-components';
 import Button from '../../../../components/Form/Button';
 import PurchaseConfirmation from './PurchaseConfirmation';
 import InputMask from 'react-input-mask';
+import { createPayment } from '../../../../services/payment';
+import UserContext from '../../../../contexts/UserContext';
 
-export default function PaymentForm() {
+export default function PaymentForm({ userTicket }) {
   const [state, setState] = useState({ cvc: '', expiry: '', focus: '', name: '', number: '' });
   const [confirmedPurchase, setConfirmedPurchase] = useState(false);
+  const { userData } = useContext(UserContext);
+  const { token } = userData;
 
   const handleInputFocus = (e) => {
     setState({ ...state, focus: e.target.name });
@@ -17,6 +21,32 @@ export default function PaymentForm() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
+  };
+
+  const buildBody = () => {
+    const body = {
+      ticketId: userTicket.id,
+      cardData: {
+        issuer: 'VISA',
+        number: state.number.replaceAll(' ', ''),
+        name: state.name,
+        expirationDate: state.expiry,
+        cvv: state.cvc,
+      },
+    };
+    return body;
+  };
+
+  const handleFormSubmit = async(e) => {
+    e.preventDefault();
+    const body = buildBody();
+
+    try {
+      await createPayment(body, token);
+      setConfirmedPurchase(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -34,7 +64,7 @@ export default function PaymentForm() {
             number={state.number}
             style={{ hieght: '140px' }}
           />
-          <Form>
+          <Form onSubmit={handleFormSubmit}>
             <Top>
               <Input
                 mask="9999 9999 9999 9999"
