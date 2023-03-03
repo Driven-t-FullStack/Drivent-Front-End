@@ -64,8 +64,9 @@ export default function Payment() {
       };
     }
     console.log(body);
-    const promise = await axios.post('http://localhost:4000/tickets/types', body, CONFIG);
-    console.log(promise.data);
+    const ticketType = await axios.post('http://localhost:4000/tickets/types', body, CONFIG);
+    const ticket = await axios.post('http://localhost:4000/tickets', { ticketTypeId: ticketType.data.id }, CONFIG);
+    console.log(ticket.data);
   }
 
   return (
