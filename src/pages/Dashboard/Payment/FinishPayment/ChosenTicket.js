@@ -1,12 +1,19 @@
 import styled from 'styled-components';
 
-export default function ChosenTicket() {
+export default function ChosenTicket({ ticketType }) {
   return (
     <>
       <Label>Ingresso escolhido</Label>
       <Container>
-        <Informations>Presencial + Com Hotel</Informations>
-        <Price>R$ 780</Price>
+        <Informations>{ticketType.name}</Informations>
+        <Price>
+          {ticketType.price.toLocaleString('pt-br', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+        </Price>
       </Container>
     </>
   );
