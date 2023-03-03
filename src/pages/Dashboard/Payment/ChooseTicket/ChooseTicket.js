@@ -1,13 +1,14 @@
 import Title from '../../../../components/Dashboard/Title';
 import ModalityContainer from '../../../../components/Dashboard/Payments/ModalityContainer';
 import HotelContainer from '../../../../components/Dashboard/Payments/HotelContainer';
-import { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 import UserContext from '../../../../contexts/UserContext';
 import Button from '../../../../components/Form/Button';
+import useEnrollment from '../../../hooks/api/useEnrollment';
 
 export default function ChooseTicket({ setFinishPayment }) {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -17,6 +18,7 @@ export default function ChooseTicket({ setFinishPayment }) {
   const [hotelPrice, setHotelPrice] = useState(0);
   const { userData } = useContext(UserContext);
   const { token } = userData;
+  const { enrollment } = useEnrollment();
   const CONFIG = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -68,48 +70,76 @@ export default function ChooseTicket({ setFinishPayment }) {
     setFinishPayment(true);
   }
 
-  return (
-    <>
-      <Title>Ingresso e pagamento</Title>
-      <ModalityContainer
-        text="Primeiro, escolha sua modalidade de ingresso"
-        options={[
-          { title: 'Presencial', price: 250 },
-          { title: 'Online', price: 100 },
-        ]}
-        modality={modality}
-        setModality={setModality}
-        setModalityPrice={setModalityPrice}
-      />
-      {modality === 'Presencial' && (
-        <HotelContainer
-          text="Ótimo! Agora escolha sua modalidade de hospedagem"
+  if (enrollment === null) {
+    return (
+      <>
+        <Title>Ingresso e pagamento</Title>
+        <NoSubscription>
+          <h1>
+            {' '}
+            Você precisa completar sua incrição antes <br /> de prosseguir para escolha de ingresso
+          </h1>
+        </NoSubscription>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Title>Ingresso e pagamento</Title>
+        <ModalityContainer
+          text="Primeiro, escolha sua modalidade de ingresso"
           options={[
-            { title: 'Sem Hotel', price: 0 },
-            { title: 'Com Hotel', price: 350 },
+            { title: 'Presencial', price: 250 },
+            { title: 'Online', price: 100 },
           ]}
-          setHotel={setHotel}
-          setHotelPrice={setHotelPrice}
+          modality={modality}
+          setModality={setModality}
+          setModalityPrice={setModalityPrice}
         />
-      )}
-      {modality === 'Online' && (
-        <>
-          <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
-          <Button onClick={submitPaymentInfos}>RESERVAR INGRESSO</Button>
-        </>
-      )}
-      {hotel !== null && (
-        <>
-          <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
-          <Button onClick={submitPaymentInfos}>RESERVAR INGRESSO</Button>
-        </>
-      )}
-    </>
-  );
+        {modality === 'Presencial' && (
+          <HotelContainer
+            text="Ótimo! Agora escolha sua modalidade de hospedagem"
+            options={[
+              { title: 'Sem Hotel', price: 0 },
+              { title: 'Com Hotel', price: 350 },
+            ]}
+            setHotel={setHotel}
+            setHotelPrice={setHotelPrice}
+          />
+        )}
+        {modality === 'Online' && (
+          <>
+            <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
+            <Button onClick={submitPaymentInfos}>RESERVAR INGRESSO</Button>
+          </>
+        )}
+        {hotel !== null && (
+          <>
+            <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
+            <Button onClick={submitPaymentInfos}>RESERVAR INGRESSO</Button>
+          </>
+        )}
+      </>
+    );
+  }
 }
 
 const SubTitle = styled.h2`
   color: #8e8e8e;
   font-size: 20px;
   margin-bottom: 15px;
+`;
+const NoSubscription = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 80%;
+  h1 {
+    color: #8e8e8e;
+    font-size: 20px;
+    text-align: center;
+    line-break: auto;
+  }
 `;

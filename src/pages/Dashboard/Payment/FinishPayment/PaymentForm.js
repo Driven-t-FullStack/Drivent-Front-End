@@ -128,7 +128,6 @@ const CardInfo = styled.section`
   display: flex;
   align-items: center;
 `;
-
 const Form = styled.form`
   margin-left: 25px;
   position: relative;
@@ -138,7 +137,6 @@ const Form = styled.form`
     top: 220px;
   }
 `;
-
 const Input = styled(InputMask)`
   width: ${(props) => (props.width ? props.width : '280px')};
   height: 40px;
