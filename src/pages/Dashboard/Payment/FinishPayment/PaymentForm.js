@@ -16,7 +16,6 @@ export default function PaymentForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(state);
     setState({ ...state, [name]: value });
   };
 
