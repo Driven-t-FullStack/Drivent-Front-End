@@ -14,7 +14,7 @@ export default function FinishPayment() {
     const fetchUserTicket = async() => {
       try {
         const ticket = await getUserTicket(token);
-        setUserTicket(ticket);
+        setUserTicket(ticket.data);
       } catch (err) {
         console.log(err.message);
       }
@@ -29,8 +29,8 @@ export default function FinishPayment() {
 
   return (
     <>
-      <ChosenTicket />
-      <PaymentForm />
+      <ChosenTicket ticketType={userTicket.TicketType} />
+      <PaymentForm userTicket={userTicket} />
     </>
   );
 }

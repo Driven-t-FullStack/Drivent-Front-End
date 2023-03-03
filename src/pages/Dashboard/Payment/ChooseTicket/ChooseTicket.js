@@ -63,7 +63,8 @@ export default function ChooseTicket({ setFinishPayment }) {
       };
     }
 
-    await axios.post('http://localhost:4000/tickets/types', body, CONFIG);
+    const ticketType = await axios.post('http://localhost:4000/tickets/types', body, CONFIG);
+    const ticket = await axios.post('http://localhost:4000/tickets', { ticketTypeId: ticketType.data.id }, CONFIG);
     setFinishPayment(true);
   }
 
