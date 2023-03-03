@@ -5,10 +5,10 @@ function HotelOption({ title, price, setSelected, selected, index, setHotelPrice
     if (selected === false || selected !== index) {
       setSelected(index);
       if (index === 1) {
-        setHotel(true);
+        setHotel('Com Hotel');
         setHotelPrice(price);
       } else {
-        setHotel(false);
+        setHotel('Sem Hotel');
         setHotelPrice(0);
       }
     } else {

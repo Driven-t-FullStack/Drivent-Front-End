@@ -3,8 +3,11 @@ import ModalityContainer from '../../../components/Dashboard/Payments/ModalityCo
 import HotelContainer from '../../../components/Dashboard/Payments/HotelContainer';
 import { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import { useEffect } from 'react';
 import Button from '../../../components/Form/Button';
+import { useContext } from 'react';
+import UserContext from '../../../contexts/UserContext';
 
 // import FinishPayment from './FinishPayment';
 
@@ -14,6 +17,13 @@ export default function Payment() {
   const [modalityPrice, setModalityPrice] = useState(0);
   const [hotel, setHotel] = useState(null);
   const [hotelPrice, setHotelPrice] = useState(0);
+  const { userData } = useContext(UserContext);
+  const { token } = userData;
+  const CONFIG = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   useEffect(() => {
     if (hotel) {
       setTotalPrice(modalityPrice + hotelPrice);
@@ -29,8 +39,33 @@ export default function Payment() {
     }
   }, [modality]);
 
-  function submitPaymentInfos() {
-    
+  async function submitPaymentInfos() {
+    let body = {};
+    if (hotel === 'Com Hotel') {
+      body = {
+        name: `${modality} + ${hotel}`,
+        price: modalityPrice + hotelPrice,
+        isRemote: false,
+        includesHotel: true,
+      };
+    } else if (hotel === 'Sem Hotel') {
+      body = {
+        name: `${modality} + ${hotel}`,
+        price: modalityPrice,
+        isRemote: false,
+        includesHotel: false,
+      };
+    } else {
+      body = {
+        name: `${modality}`,
+        price: modalityPrice,
+        isRemote: true,
+        includesHotel: false,
+      };
+    }
+    console.log(body);
+    const promise = await axios.post('http://localhost:4000/tickets/types', body, CONFIG);
+    console.log(promise.data);
   }
 
   return (
@@ -60,17 +95,13 @@ export default function Payment() {
       {modality === 'Online' && (
         <>
           <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
-          <Button type="submit" onSubmit={() => submitPaymentInfos()}>
-            RESERVAR INGRESSO
-          </Button>
+          <Button onClick={submitPaymentInfos}>RESERVAR INGRESSO</Button>
         </>
       )}
       {hotel !== null && (
         <>
           <SubTitle>Fechado! O total ficou em R${totalPrice}. Agora é só confirmar:</SubTitle>
-          <Button type="submit" onSubmit={() => submitPaymentInfos()}>
-            RESERVAR INGRESSO
-          </Button>
+          <Button onClick={submitPaymentInfos}>RESERVAR INGRESSO</Button>
         </>
       )}
     </>
