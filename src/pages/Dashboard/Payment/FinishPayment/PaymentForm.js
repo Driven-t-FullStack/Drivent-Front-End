@@ -3,9 +3,11 @@ import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import styled from 'styled-components';
 import Button from '../../../../components/Form/Button';
+import PurchaseConfirmation from './PurchaseConfirmation';
 
 export default function PaymentForm() {
   const [state, setState] = useState({ cvc: '', expiry: '', focus: '', name: '', number: '' });
+  const [confirmedPurchase, setConfirmedPurchase] = useState(false);
 
   const handleInputFocus = (e) => {
     setState({ ...state, focus: e.target.name });
@@ -20,56 +22,60 @@ export default function PaymentForm() {
   return (
     <>
       <Label>Pagamento</Label>
-      <CardInfo>
-        <Cards
-          cvc={state.cvc}
-          expiry={state.expiry}
-          focused={state.focus}
-          name={state.name}
-          number={state.number}
-          style={{ hieght: '140px' }}
-        />
-        <Form>
-          <Top>
-            <Input
-              type="tel"
-              name="number"
-              placeholder="Card Number"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              required
-            />
-            <p>E.g.:49...,51...,36...,37...</p>
-            <Input
-              type="text"
-              name="name"
-              placeholder="Name"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              required
-            />
-          </Top>
-          <Bottom>
-            <Input
-              width={'170px'}
-              name="expiry"
-              placeholder="Valid thru"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              required
-            />
-            <Input
-              width={'95px'}
-              name="cvc"
-              placeholder="CVC"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              required
-            />
-          </Bottom>
-          <Button type="submit">FINALIZAR PAGAMENTO </Button>
-        </Form>
-      </CardInfo>
+      {confirmedPurchase ? (
+        <PurchaseConfirmation />
+      ) : (
+        <CardInfo>
+          <Cards
+            cvc={state.cvc}
+            expiry={state.expiry}
+            focused={state.focus}
+            name={state.name}
+            number={state.number}
+            style={{ hieght: '140px' }}
+          />
+          <Form>
+            <Top>
+              <Input
+                type="tel"
+                name="number"
+                placeholder="Card Number"
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                required
+              />
+              <p>E.g.:49...,51...,36...,37...</p>
+              <Input
+                type="text"
+                name="name"
+                placeholder="Name"
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                required
+              />
+            </Top>
+            <Bottom>
+              <Input
+                width={'170px'}
+                name="expiry"
+                placeholder="Valid thru"
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                required
+              />
+              <Input
+                width={'95px'}
+                name="cvc"
+                placeholder="CVC"
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                required
+              />
+            </Bottom>
+            <Button type="submit">FINALIZAR PAGAMENTO </Button>
+          </Form>
+        </CardInfo>
+      )}
     </>
   );
 }
