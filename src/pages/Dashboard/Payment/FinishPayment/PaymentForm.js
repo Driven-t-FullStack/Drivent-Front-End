@@ -9,7 +9,7 @@ import { createPayment } from '../../../../services/payment';
 import UserContext from '../../../../contexts/UserContext';
 
 export default function PaymentForm({ userTicket }) {
-  const [state, setState] = useState({ cvc: '', expiry: '', focus: '', name: '', number: '' });
+  const [state, setState] = useState({ cvc: '', expiry: '', focus: '', name: '', number: '', issuer: '' });
   const [confirmedPurchase, setConfirmedPurchase] = useState(false);
   const { userData } = useContext(UserContext);
   const { token } = userData;
@@ -27,7 +27,7 @@ export default function PaymentForm({ userTicket }) {
     const body = {
       ticketId: userTicket.id,
       cardData: {
-        issuer: 'VISA',
+        issuer: state.issuer,
         number: state.number.replaceAll(' ', ''),
         name: state.name,
         expirationDate: state.expiry,
@@ -40,13 +40,16 @@ export default function PaymentForm({ userTicket }) {
   const handleFormSubmit = async(e) => {
     e.preventDefault();
     const body = buildBody();
-
     try {
       await createPayment(body, token);
       setConfirmedPurchase(true);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleIssuer = (e) => {
+    setState({ ...state, issuer: e.issuer });
   };
 
   return (
@@ -63,6 +66,7 @@ export default function PaymentForm({ userTicket }) {
             name={state.name}
             number={state.number}
             style={{ hieght: '140px' }}
+            callback={handleIssuer}
           />
           <Form onSubmit={handleFormSubmit}>
             <Top>
