@@ -88,7 +88,7 @@ export default function PaymentForm({ userTicket }) {
             </Top>
             <Bottom>
               <Input
-                mask="99/9999"
+                mask="99/99"
                 width={'170px'}
                 name="expiry"
                 placeholder="Valid thru"
