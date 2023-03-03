@@ -4,6 +4,7 @@ import 'react-credit-cards/es/styles-compiled.css';
 import styled from 'styled-components';
 import Button from '../../../../components/Form/Button';
 import PurchaseConfirmation from './PurchaseConfirmation';
+import InputMask from 'react-input-mask';
 
 export default function PaymentForm() {
   const [state, setState] = useState({ cvc: '', expiry: '', focus: '', name: '', number: '' });
@@ -15,7 +16,7 @@ export default function PaymentForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+    console.log(state);
     setState({ ...state, [name]: value });
   };
 
@@ -37,6 +38,7 @@ export default function PaymentForm() {
           <Form>
             <Top>
               <Input
+                mask="9999 9999 9999 9999"
                 type="tel"
                 name="number"
                 placeholder="Card Number"
@@ -44,6 +46,7 @@ export default function PaymentForm() {
                 onFocus={handleInputFocus}
                 required
               />
+
               <p>E.g.:49...,51...,36...,37...</p>
               <Input
                 type="text"
@@ -56,6 +59,7 @@ export default function PaymentForm() {
             </Top>
             <Bottom>
               <Input
+                mask="99/9999"
                 width={'170px'}
                 name="expiry"
                 placeholder="Valid thru"
@@ -64,6 +68,7 @@ export default function PaymentForm() {
                 required
               />
               <Input
+                mask="999"
                 width={'95px'}
                 name="cvc"
                 placeholder="CVC"
@@ -101,7 +106,7 @@ const Form = styled.form`
   }
 `;
 
-const Input = styled.input`
+const Input = styled(InputMask)`
   width: ${(props) => (props.width ? props.width : '280px')};
   height: 40px;
   padding: 12px;
