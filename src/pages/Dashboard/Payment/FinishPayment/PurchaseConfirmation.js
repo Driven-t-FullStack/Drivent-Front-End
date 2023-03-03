@@ -20,14 +20,12 @@ const Container = styled.section`
   display: flex;
   align-items: center;
 `;
-
 const Right = styled.div`
   svg {
     font-size: 50px;
     color: #36b853;
   }
 `;
-
 const Left = styled.div`
   margin-left: 13px;
   p {

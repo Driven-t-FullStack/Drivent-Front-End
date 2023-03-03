@@ -24,7 +24,6 @@ const Label = styled.h2`
   color: #aaaaaa;
   margin-bottom: 15px;
 `;
-
 const Container = styled.section`
   width: 290px;
   height: 108px;
@@ -36,7 +35,6 @@ const Container = styled.section`
   border-radius: 20px;
   margin-bottom: 30px;
 `;
-
 const Informations = styled.p`
   margin-bottom: 12px;
   font-style: normal;
@@ -45,7 +43,6 @@ const Informations = styled.p`
   line-height: 19px;
   color: #454545;
 `;
-
 const Price = styled.p`
   font-style: normal;
   font-weight: 400;
