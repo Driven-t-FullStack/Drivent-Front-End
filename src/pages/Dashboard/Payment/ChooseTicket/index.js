@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import UserContext from '../../../../contexts/UserContext';
 import Button from '../../../../components/Form/Button';
-import useEnrollment from '../../../hooks/api/useEnrollment';
+import useEnrollment from '../../../../hooks/api/useEnrollment';
 
 export default function ChooseTicket({ setFinishPayment }) {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -66,7 +66,7 @@ export default function ChooseTicket({ setFinishPayment }) {
     }
 
     const ticketType = await axios.post('http://localhost:4000/tickets/types', body, CONFIG);
-    const ticket = await axios.post('http://localhost:4000/tickets', { ticketTypeId: ticketType.data.id }, CONFIG);
+    await axios.post('http://localhost:4000/tickets', { ticketTypeId: ticketType.data.id }, CONFIG);
     setFinishPayment(true);
   }
 
