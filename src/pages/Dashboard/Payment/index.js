@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ChooseTicket from './ChooseTicket/ChooseTicket';
+import ChooseTicket from './ChooseTicket';
 import FinishPayment from './FinishPayment';
 
 export default function Payment() {

@@ -44,6 +44,7 @@ export default function PaymentForm({ userTicket }) {
       await createPayment(body, token);
       setConfirmedPurchase(true);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   };

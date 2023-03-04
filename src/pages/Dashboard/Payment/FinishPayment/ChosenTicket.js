@@ -17,7 +17,7 @@ export default function ChosenTicket({ ticketType }) {
       </Container>
     </>
   );
-}
+};
 
 const Label = styled.h2`
   font-size: 18px;
