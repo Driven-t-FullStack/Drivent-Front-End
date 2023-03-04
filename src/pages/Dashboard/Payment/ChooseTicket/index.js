@@ -16,6 +16,7 @@ export default function ChooseTicket({ setFinishPayment }) {
   const [modalityPrice, setModalityPrice] = useState(0);
   const [hotel, setHotel] = useState(null);
   const [hotelPrice, setHotelPrice] = useState(0);
+  const [ticketTypes, setTicketTypes] = useState();
   const { userData } = useContext(UserContext);
   const { token } = userData;
   const { enrollment } = useEnrollment();
@@ -24,6 +25,14 @@ export default function ChooseTicket({ setFinishPayment }) {
       Authorization: `Bearer ${token}`,
     },
   };
+
+  useEffect(() => {
+    const fetchTicketTypes = async() => {
+      const ticketTypes = await axios.get('http://localhost:4000/tickets/types', CONFIG);
+      setTicketTypes(ticketTypes.data);
+    };
+    fetchTicketTypes();
+  }, []);
 
   useEffect(() => {
     if (hotel) {
@@ -41,32 +50,14 @@ export default function ChooseTicket({ setFinishPayment }) {
   }, [modality]);
 
   async function submitPaymentInfos() {
-    let body = {};
-    if (hotel === 'Com Hotel') {
-      body = {
-        name: `${modality} + ${hotel}`,
-        price: modalityPrice + hotelPrice,
-        isRemote: false,
-        includesHotel: true,
-      };
-    } else if (hotel === 'Sem Hotel') {
-      body = {
-        name: `${modality} + ${hotel}`,
-        price: modalityPrice,
-        isRemote: false,
-        includesHotel: false,
-      };
-    } else {
-      body = {
-        name: `${modality}`,
-        price: modalityPrice,
-        isRemote: true,
-        includesHotel: false,
-      };
+    let ticketTypeId;
+    for (let i = 0; i < ticketTypes.length; i++) {
+      const element = ticketTypes[i];
+      if (totalPrice === element.price) {
+        ticketTypeId = element.id;
+      }
     }
-
-    const ticketType = await axios.post('http://localhost:4000/tickets/types', body, CONFIG);
-    await axios.post('http://localhost:4000/tickets', { ticketTypeId: ticketType.data.id }, CONFIG);
+    await axios.post('http://localhost:4000/tickets', { ticketTypeId }, CONFIG);
     setFinishPayment(true);
   }
 
