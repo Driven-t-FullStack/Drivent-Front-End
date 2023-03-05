@@ -45,3 +45,17 @@ export const HotelPreview = styled.div`
     color: #343434;
   }
 `;
+export const NoPayment = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 80%;
+  h3 {
+    color: #8e8e8e;
+    font-size: 20px;
+    text-align: center;
+    line-break: auto;
+  }
+`;

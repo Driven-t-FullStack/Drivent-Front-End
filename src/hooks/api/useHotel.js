@@ -1,20 +1,30 @@
-import useAsync from '../useAsync';
-import useToken from '../useToken';
-
 import * as hotelApi from '../../services/hotelApi'; 
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useContext } from 'react';
+import UserContext from '../../contexts/UserContext';
 
 export default function useHotel() {
-  const token = useToken();
+  const [hotels, setHotels] = useState(null);
+  const { userData } = useContext(UserContext);
+  const { token } = userData;
 
-  const {
-    data: hotels,
-    loading: eventLoading,
-    error: eventError,
-  } = useAsync(hotelApi.getHotels(token));
+  useEffect(() => {
+    const fetchHotels = async() => {
+      try {
+        const ticket = await hotelApi.getHotels(token);
+        console.log(ticket, 'asasasdasd');
+        setHotels(ticket.data);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      }
+    };
 
-  return {
-    hotels,
-    eventLoading,
-    eventError
-  };
+    fetchHotels();
+  }, []);
+
+  if (!hotels) {
+    return hotels;
+  }
 }
