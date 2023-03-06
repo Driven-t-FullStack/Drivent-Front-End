@@ -7,21 +7,30 @@ import PurchaseConfirmation from './PurchaseConfirmation';
 import InputMask from 'react-input-mask';
 import { createPayment } from '../../../../services/payment';
 import UserContext from '../../../../contexts/UserContext';
+import { useEffect } from 'react';
 
 export default function PaymentForm({ userTicket }) {
   const [state, setState] = useState({ cvc: '', expiry: '', focus: '', name: '', number: '', issuer: '' });
   const [processingPurchase, setProcessingPurchase] = useState(false);
   const [confirmedPurchase, setConfirmedPurchase] = useState(false);
-  const [errorOnPurchase, setErrorOnPurchage] = useState(false);
+  const [errorOnPurchase, setErrorOnPurchase] = useState(false);
   const [formState, setFormState] = useState(false);
   const { userData } = useContext(UserContext);
   const { token } = userData;
 
-  const handleInputFocus =(e) => {
+  useEffect(() => {
+    if (userTicket.status === 'PAID') {
+      setConfirmedPurchase(true);
+      setProcessingPurchase(false);
+      setFormState(true);
+    }
+  }, []);
+
+  const handleInputFocus = (e) => {
     setState({ ...state, focus: e.target.name });
   };
 
-  const handleInputChange =(e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
@@ -50,7 +59,7 @@ export default function PaymentForm({ userTicket }) {
       setProcessingPurchase(false);
       setConfirmedPurchase(true);
     } catch (err) {
-      setErrorOnPurchage(true);
+      setErrorOnPurchase(true);
       // eslint-disable-next-line no-console
       console.log(err);
     }
@@ -64,9 +73,9 @@ export default function PaymentForm({ userTicket }) {
     <>
       <Label>Pagamento</Label>
       {formState ? (
-        <PurchaseConfirmation 
-          processingPurchase={processingPurchase} 
-          confirmedPurchase={confirmedPurchase} 
+        <PurchaseConfirmation
+          processingPurchase={processingPurchase}
+          confirmedPurchase={confirmedPurchase}
           errorOnPurchase={errorOnPurchase}
         />
       ) : (

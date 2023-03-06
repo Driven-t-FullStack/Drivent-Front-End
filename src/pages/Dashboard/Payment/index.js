@@ -15,7 +15,6 @@ export default function Payment() {
     const fetchUserTicket = async() => {
       try {
         const ticket = await getUserTicket(token);
-        console.log('entrei');
         setUserTicket(ticket.data);
       } catch (err) {
         console.log(err.message);
