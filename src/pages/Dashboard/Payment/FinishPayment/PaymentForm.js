@@ -14,11 +14,11 @@ export default function PaymentForm({ userTicket }) {
   const { userData } = useContext(UserContext);
   const { token } = userData;
 
-  const handleInputFocus = (e) => {
+  const handleInputFocus =(e) => {
     setState({ ...state, focus: e.target.name });
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange =(e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
@@ -56,7 +56,9 @@ export default function PaymentForm({ userTicket }) {
   return (
     <>
       <Label>Pagamento</Label>
-      {confirmedPurchase ? (
+      {userTicket.status === 'PAID' ? (
+        <PurchaseConfirmation />
+      ) : confirmedPurchase ? (
         <PurchaseConfirmation />
       ) : (
         <CardInfo>
