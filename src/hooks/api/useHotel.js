@@ -13,7 +13,6 @@ export default function useHotel() {
     const fetchHotels = async() => {
       try {
         const ticket = await hotelApi.getHotels(token);
-        console.log(ticket, 'asasasdasd');
         setHotels(ticket.data);
       } catch (err) {
         // eslint-disable-next-line no-console
