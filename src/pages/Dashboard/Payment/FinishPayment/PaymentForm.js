@@ -10,7 +10,10 @@ import UserContext from '../../../../contexts/UserContext';
 
 export default function PaymentForm({ userTicket }) {
   const [state, setState] = useState({ cvc: '', expiry: '', focus: '', name: '', number: '', issuer: '' });
+  const [processingPurchase, setProcessingPurchase] = useState(false);
   const [confirmedPurchase, setConfirmedPurchase] = useState(false);
+  const [errorOnPurchase, setErrorOnPurchage] = useState(false);
+  const [formState, setFormState] = useState(false);
   const { userData } = useContext(UserContext);
   const { token } = userData;
 
@@ -41,9 +44,13 @@ export default function PaymentForm({ userTicket }) {
     e.preventDefault();
     const body = buildBody();
     try {
+      setFormState(true);
+      setProcessingPurchase(true);
       await createPayment(body, token);
+      setProcessingPurchase(false);
       setConfirmedPurchase(true);
     } catch (err) {
+      setErrorOnPurchage(true);
       // eslint-disable-next-line no-console
       console.log(err);
     }
@@ -56,10 +63,12 @@ export default function PaymentForm({ userTicket }) {
   return (
     <>
       <Label>Pagamento</Label>
-      {userTicket.status === 'PAID' ? (
-        <PurchaseConfirmation />
-      ) : confirmedPurchase ? (
-        <PurchaseConfirmation />
+      {formState ? (
+        <PurchaseConfirmation 
+          processingPurchase={processingPurchase} 
+          confirmedPurchase={confirmedPurchase} 
+          errorOnPurchase={errorOnPurchase}
+        />
       ) : (
         <CardInfo>
           <Cards
