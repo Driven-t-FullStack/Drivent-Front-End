@@ -1,7 +1,5 @@
 import * as hotelApi from '../../services/hotelApi'; 
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
 export default function useHotel() {
@@ -23,7 +21,7 @@ export default function useHotel() {
     fetchHotels();
   }, []);
 
-  if (!hotels) {
+  if (hotels !== null) {
     return hotels;
   }
 }
