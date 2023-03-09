@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Button from '../../../../components/Form/Button';
 import PurchaseConfirmation from './PurchaseConfirmation';
 import InputMask from 'react-input-mask';
-import { createPayment } from '../../../../services/payment';
+import { createPayment } from '../../../../services/paymentApi';
 import UserContext from '../../../../contexts/UserContext';
 import { useEffect } from 'react';
 

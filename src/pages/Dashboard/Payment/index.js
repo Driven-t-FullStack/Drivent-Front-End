@@ -3,7 +3,7 @@ import FinishPayment from './FinishPayment';
 import { useContext } from 'react';
 import { useState, useEffect } from 'react';
 import UserContext from '../../../contexts/UserContext';
-import { getUserTicket } from '../../../services/payment';
+import { getUserTicket } from '../../../services/paymentApi';
 
 export default function Payment() {
   const [finishPayment, setFinishPayment] = useState(false);
