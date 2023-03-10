@@ -5,7 +5,7 @@ import { HotelPreview, NoPayment, Page } from './style';
 export default function Hotel() {
   const ticket = useTicket();
   const hotels = useHotel();
-  if (!ticket.TicketType.includesHotel) {
+  if (!ticket?.TicketType.includesHotel) {
     return (
       <Page>
         <div>
