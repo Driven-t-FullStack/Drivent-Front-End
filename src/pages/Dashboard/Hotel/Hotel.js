@@ -19,6 +19,7 @@ export default function Hotel({ hotel, setChosenHotel, chosenHotel, fetchRooms, 
       setChosenHotel(null);
     } else {
       fetchRooms(hotelId, token);
+      setShowRooms(true);
       setChosenHotel(hotelId);
     }
   }

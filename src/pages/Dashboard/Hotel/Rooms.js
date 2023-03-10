@@ -1,18 +1,19 @@
 import styled from 'styled-components';
 import Room from './Room';
 
-export default function Rooms() {
+export default function Rooms({ roomLoading, rooms }) {
   return (
     <Container>
       <h2>Ótima Pedida, Agora escolha seu quarto: </h2>
-      <RoomsBox>
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-      </RoomsBox>
+      {roomLoading ? (
+        <h2>Loading...</h2>
+      ) : (
+        <RoomsBox>
+          {rooms.Rooms.map((room) => (
+            <Room room={room} key={room.id} />
+          ))}
+        </RoomsBox>
+      )}
     </Container>
   );
 }

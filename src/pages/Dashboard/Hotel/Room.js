@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import { IoPersonSharp } from 'react-icons/io5';
 import { IoPersonOutline } from 'react-icons/io5';
 
-export default function Room() {
+export default function Room({ room }) {
+  console.log(room);
+
   return (
-    <ButtonRoom>
-      <Left>101</Left>
+    <ButtonRoom type="Button">
+      <Left>{room.name}</Left>
       <Right>
         <IoPersonSharp />
         <IoPersonOutline />

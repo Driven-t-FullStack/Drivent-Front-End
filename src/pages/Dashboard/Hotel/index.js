@@ -10,6 +10,7 @@ export default function Hotels() {
   const [chosenHotel, setChosenHotel] = useState(null);
   const { roomLoading, fetchRooms, rooms } = useRoom();
   const [showRooms, setShowRooms] = useState(false);
+  console.log(rooms);
 
   if (hotelLoading) {
     return <div>loading</div>;
@@ -49,7 +50,7 @@ export default function Hotels() {
                 />
               ))}
             </div>
-            <Rooms />
+            {showRooms && <Rooms rooms={rooms} roomLoading={roomLoading} />}
           </div>
         </Page>
       </>
