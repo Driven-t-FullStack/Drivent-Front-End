@@ -21,28 +21,43 @@ export const Page = styled.div`
 export const HotelPreview = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 12px 0;
+  padding: 15px;
   margin-right: 20px;
   flex-wrap: wrap;
-
+  cursor: pointer;
   width: 196px;
   height: 264px;
   border-radius: 10px;
-  background: #EBEBEB;
+  background: #ebebeb;
   img {
     width: 168px;
     height: 109px;
     border-radius: 5px;
   }
   h1 {
-    width: 85%;
     padding-top: 10px;
-
     text-align: start;
     font-size: 20px;
     line-height: 23px;
     color: #343434;
+  }
+  h2 {
+    margin-top: 10px;
+    padding-bottom: 0;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 14px;
+    color: #3c3c3c;
+  }
+  p {
+    margin-bottom: 4px;
+    padding-bottom: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    color: #3c3c3c;
   }
 `;
 export const NoPayment = styled.div`

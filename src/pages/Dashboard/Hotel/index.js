@@ -1,9 +1,10 @@
 import useHotel from '../../../hooks/api/useHotel';
-import { HotelPreview, NoPayment, Page } from './style';
+import Hotel from './Hotel';
+import { NoPayment, Page } from './style';
 
-export default function Hotel() {
+export default function Hotels() {
   const { hotels, error, loading } = useHotel();
-  console.log(hotels);
+
   if (loading) {
     return <div>loading</div>;
   }
@@ -30,11 +31,8 @@ export default function Hotel() {
         <div>
           <h2> Primeiro, escolha seu hotel </h2>
           <div>
-            {hotels?.map((e, i) => (
-              <HotelPreview key={i}>
-                <img src={e.img} alt="hotel_picture" />
-                <h1> {e.name} </h1>
-              </HotelPreview>
+            {hotels?.map((hotel) => (
+              <Hotel hotel={hotel} key={hotel.id}/>
             ))}
           </div>
         </div>
