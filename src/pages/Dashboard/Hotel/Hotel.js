@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import useToken from '../../../hooks/useToken';
 import { HotelPreview } from './style';
 
-export default function Hotel({ hotel }) {
-  const [chosenHotel, setChosenHotel] = useState(null);
+export default function Hotel({ hotel, setChosenHotel, chosenHotel, fetchRooms, setShowRooms }) {
+  const token = useToken();
 
   function computeAvailableVacancies(object) {
     const totalCapacity = object.Rooms.reduce((acc, current) => acc + current.capacity, 0);
@@ -12,8 +12,19 @@ export default function Hotel({ hotel }) {
     return availableVacancies;
   }
 
+  function chooseHotel(hotelId) {
+    hotelId === chosenHotel ? setChosenHotel(null) : setChosenHotel(hotelId);
+    if (hotelId === chosenHotel) {
+      setShowRooms(false);
+      setChosenHotel(null);
+    } else {
+      fetchRooms(hotelId, token);
+      setChosenHotel(hotelId);
+    }
+  }
+
   return (
-    <HotelPreview onClick={() => setChosenHotel(hotel.id)} isChosen={chosenHotel === hotel.id}>
+    <HotelPreview onClick={() => chooseHotel(hotel.id)} isChosen={chosenHotel === hotel.id}>
       <img src={hotel.img} alt="hotel_picture" />
       <h1> {hotel.name} </h1>
       <h2>Tipos de acomodação: </h2>
