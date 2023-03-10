@@ -4,7 +4,7 @@ export default function useAsync(handler, immediate = true) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(immediate);
   const [error, setError] = useState(null);
-
+  console.log(data);
   const act = async(...args) => {
     setLoading(true);
     setError(null);
@@ -15,7 +15,7 @@ export default function useAsync(handler, immediate = true) {
       setLoading(false);
       return data;
     } catch (err) {
-      setError(error);
+      setError(err);
       setLoading(false);
       throw err;
     }
@@ -33,6 +33,6 @@ export default function useAsync(handler, immediate = true) {
     data,
     loading,
     error,
-    act
+    act,
   };
 }

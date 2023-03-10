@@ -1,38 +1,63 @@
-import useHotel from '../../../hooks/api/useHotel';
-import { HotelPreview, NoPayment, Page } from './style';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import useRoom from '../../../hooks/api/useRoom';
+import useToken from '../../../hooks/useToken';
+import { getBooking } from '../../../services/bookingApi';
+import BookingInformation from './BookingInformation';
+import Hotels from './Hotels';
+import Rooms from './Rooms';
+import { Page } from './style';
 
-export default function Hotel() {
-  const hotels = useHotel();
+export default function BookingRoomFlow() {
+  const { roomLoading, fetchRooms, rooms } = useRoom();
+  const [chosenRoomId, setChosenRoomId] = useState(null);
+  const [showRooms, setShowRooms] = useState(false);
+  const [bookingIsDone, setBookingIsDone] = useState(false);
+  const [booking, setBooking] = useState(null);
+  const token = useToken();
 
-  if (hotels === null) {
-    return (
-      <Page>
-        <div>
-          <h1> Escolha de hotel e quarto </h1>
-        </div>
-        <NoPayment>
-          <h3>Você precisa ter confirmado pagamento antes <br/> de fazer a escolha de hospedagem </h3>
-        </NoPayment>
-      </Page>
-    );
-  } else {
-    return (
-      <Page>
-        <div>
-          <h1> Escolha de hotel e quarto </h1>
-        </div>
-        <div>
-          <h2> Primeiro, escolha seu hotel </h2>
-          <div>
-            {hotels?.map((e, i) => (
-              <HotelPreview key={i}>
-                <img src={e.img} alt="hotel_picture" />
-                <h1> {e.name} </h1>
-              </HotelPreview>
-            ))}
-          </div>
-        </div>
-      </Page>
-    );
+  useEffect(() => {
+    const fetchBooking = async() => {
+      try {
+        const booking = await getBooking(token);
+        setBooking(booking);
+        setBookingIsDone(true);
+      } catch (err) {
+        setBookingIsDone(false);
+        console.log(err);
+      }
+    };
+
+    fetchBooking();
+  }, []);
+
+  if (!booking) {
+    return <div>Loading...</div>;
   }
+
+  return (
+    <>
+      <Page>
+        <div>
+          <h1> Escolha de hotel e quarto </h1>
+        </div>
+        {bookingIsDone ? (
+          <BookingInformation booking={booking} />
+        ) : (
+          <div>
+            <Hotels fetchRooms={fetchRooms} setShowRooms={setShowRooms} setChosenRoomId={setChosenRoomId} />
+            {showRooms && (
+              <Rooms
+                rooms={rooms}
+                roomLoading={roomLoading}
+                setChosenRoomId={setChosenRoomId}
+                chosenRoomId={chosenRoomId}
+                setBookingIsDone={setBookingIsDone}
+              />
+            )}
+          </div>
+        )}
+      </Page>
+    </>
+  );
 }
