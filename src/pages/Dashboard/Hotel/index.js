@@ -3,13 +3,13 @@ import Hotel from './Hotel';
 import { NoPayment, Page } from './style';
 
 export default function Hotels() {
-  const { hotels, error, loading } = useHotel();
+  const { hotelLoading, hotelError, hotels } = useHotel();
 
-  if (loading) {
+  if (hotelLoading) {
     return <div>loading</div>;
   }
 
-  if (error) {
+  if (hotelError) {
     return (
       <Page>
         <div>
@@ -32,7 +32,7 @@ export default function Hotels() {
           <h2> Primeiro, escolha seu hotel </h2>
           <div>
             {hotels?.map((hotel) => (
-              <Hotel hotel={hotel} key={hotel.id}/>
+              <Hotel hotel={hotel} key={hotel.id} />
             ))}
           </div>
         </div>

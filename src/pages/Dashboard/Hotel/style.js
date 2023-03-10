@@ -28,7 +28,7 @@ export const HotelPreview = styled.div`
   width: 196px;
   height: 264px;
   border-radius: 10px;
-  background: #ebebeb;
+  background: ${(props) => (props.isChosen ? ' #FFEED2' : '#ebebeb')};
   img {
     width: 168px;
     height: 109px;
