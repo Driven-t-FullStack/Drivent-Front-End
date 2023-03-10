@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../../components/Form/Button';
 import useToken from '../../../hooks/useToken';
-import { postRoom } from '../../../services/roomsApi';
+import { postRoom } from '../../../services/bookingApi';
 import Room from './Room';
 
 export default function Rooms({ roomLoading, rooms, chosenRoomId, setChosenRoomId, setBookingIsDone }) {
