@@ -10,7 +10,7 @@ export default function Hotels() {
   const [chosenHotel, setChosenHotel] = useState(null);
   const { roomLoading, fetchRooms, rooms } = useRoom();
   const [showRooms, setShowRooms] = useState(false);
-  console.log(rooms);
+  const [chosenRoomId, setChosenRoomId] = useState(null);
 
   if (hotelLoading) {
     return <div>loading</div>;
@@ -47,10 +47,18 @@ export default function Hotels() {
                   chosenHotel={chosenHotel}
                   fetchRooms={fetchRooms}
                   setShowRooms={setShowRooms}
+                  setChosenRoomId={setChosenRoomId}
                 />
               ))}
             </div>
-            {showRooms && <Rooms rooms={rooms} roomLoading={roomLoading} />}
+            {showRooms && (
+              <Rooms
+                rooms={rooms}
+                roomLoading={roomLoading}
+                setChosenRoomId={setChosenRoomId}
+                chosenRoomId={chosenRoomId}
+              />
+            )}
           </div>
         </Page>
       </>

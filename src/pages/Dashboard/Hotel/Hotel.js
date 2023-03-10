@@ -1,7 +1,7 @@
 import useToken from '../../../hooks/useToken';
 import { HotelPreview } from './style';
 
-export default function Hotel({ hotel, setChosenHotel, chosenHotel, fetchRooms, setShowRooms }) {
+export default function Hotel({ hotel, setChosenHotel, chosenHotel, fetchRooms, setShowRooms, setChosenRoomId }) {
   const token = useToken();
 
   function computeAvailableVacancies(object) {
@@ -17,10 +17,12 @@ export default function Hotel({ hotel, setChosenHotel, chosenHotel, fetchRooms, 
     if (hotelId === chosenHotel) {
       setShowRooms(false);
       setChosenHotel(null);
+      setChosenRoomId(null);
     } else {
       fetchRooms(hotelId, token);
       setShowRooms(true);
       setChosenHotel(hotelId);
+      setChosenRoomId(null);
     }
   }
 
