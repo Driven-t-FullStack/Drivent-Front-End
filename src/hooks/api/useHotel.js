@@ -1,9 +1,12 @@
-import * as hotelApi from '../../services/hotelApi'; 
+import * as hotelApi from '../../services/hotelApi';
 import { useEffect, useState, useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
 export default function useHotel() {
   const [hotels, setHotels] = useState(null);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const { userData } = useContext(UserContext);
   const { token } = userData;
 
@@ -11,17 +14,18 @@ export default function useHotel() {
     const fetchHotels = async() => {
       try {
         const ticket = await hotelApi.getHotels(token);
-        setHotels(ticket.data);
+
+        setHotels(ticket);
+        setLoading(false);
       } catch (err) {
         // eslint-disable-next-line no-console
-        console.log(err.message);
+        setError(true);
+        setLoading(false);
       }
     };
 
     fetchHotels();
   }, []);
 
-  if (hotels !== null) {
-    return hotels;
-  }
+  return { hotels, error, loading };
 }

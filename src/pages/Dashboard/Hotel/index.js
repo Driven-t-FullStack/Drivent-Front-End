@@ -2,16 +2,22 @@ import useHotel from '../../../hooks/api/useHotel';
 import { HotelPreview, NoPayment, Page } from './style';
 
 export default function Hotel() {
-  const hotels = useHotel();
+  const { hotels, error, loading } = useHotel();
+  console.log(hotels);
+  if (loading) {
+    return <div>loading</div>;
+  }
 
-  if (hotels === null) {
+  if (error) {
     return (
       <Page>
         <div>
           <h1> Escolha de hotel e quarto </h1>
         </div>
         <NoPayment>
-          <h3>Você precisa ter confirmado pagamento antes <br/> de fazer a escolha de hospedagem </h3>
+          <h3>
+            Você precisa ter confirmado pagamento antes <br /> de fazer a escolha de hospedagem{' '}
+          </h3>
         </NoPayment>
       </Page>
     );
