@@ -10,7 +10,7 @@ export default function Rooms({
   rooms,
   chosenRoomId,
   setChosenRoomId,
-  setBooking,
+  setBookingIsDone,
   searchBooking,
   setSearchBooking,
   updateBooking,
@@ -30,7 +30,7 @@ export default function Rooms({
         await postRoom(body, token);
       }
       setLoading(false);
-      setBooking(null);
+      setBookingIsDone(null);
       setSearchBooking(!searchBooking);
       setUpdateBooking(false);
     } catch (err) {

@@ -12,11 +12,10 @@ export default function BookingRoomFlow() {
   const { roomLoading, fetchRooms, rooms } = useRoom();
   const [chosenRoomId, setChosenRoomId] = useState(null);
   const [showRooms, setShowRooms] = useState(false);
-  const [bookingIsDone, setBookingIsDone] = useState(false);
   const [searchBooking, setSearchBooking] = useState(true);
   const [updateBooking, setUpdateBooking] = useState(false);
   const [booking, setBooking] = useState(null);
-
+  const [bookingIsDone, setBookingIsDone] = useState(null);
   const token = useToken();
 
   useEffect(() => {
@@ -26,52 +25,50 @@ export default function BookingRoomFlow() {
         setBooking(booking);
         setBookingIsDone(true);
       } catch (err) {
-        setBooking(err.name);
-        setBookingIsDone(false);
+        if (err.response.status === 404) {
+          setBookingIsDone(false);
+        }
       }
     };
 
     fetchBooking();
   }, [searchBooking]);
 
-  if (!booking) {
+  if (bookingIsDone === null) {
     return <div>Loading...</div>;
   }
-
   return (
-    <>
-      <Page>
+    <Page>
+      <div>
+        <h1> Escolha de hotel e quarto </h1>
+      </div>
+
+      {bookingIsDone === false ? (
         <div>
-          <h1> Escolha de hotel e quarto </h1>
+          <Hotels fetchRooms={fetchRooms} setShowRooms={setShowRooms} setChosenRoomId={setChosenRoomId} />
+          {showRooms && (
+            <Rooms
+              rooms={rooms}
+              roomLoading={roomLoading}
+              setChosenRoomId={setChosenRoomId}
+              chosenRoomId={chosenRoomId}
+              booking={booking}
+              setBookingIsDone={setBookingIsDone}
+              searchBooking={searchBooking}
+              setSearchBooking={setSearchBooking}
+              updateBooking={updateBooking}
+              setUpdateBooking={setUpdateBooking}
+            />
+          )}
         </div>
-        {bookingIsDone ? (
-          <BookingInformation
-            booking={booking}
-            setBookingIsDone={setBookingIsDone}
-            updateBooking={updateBooking}
-            setUpdateBooking={setUpdateBooking}
-          />
-        ) : (
-          <div>
-            <Hotels fetchRooms={fetchRooms} setShowRooms={setShowRooms} setChosenRoomId={setChosenRoomId} />
-            {showRooms && (
-              <Rooms
-                rooms={rooms}
-                roomLoading={roomLoading}
-                setChosenRoomId={setChosenRoomId}
-                chosenRoomId={chosenRoomId}
-                setBookingIsDone={setBookingIsDone}
-                booking={booking}
-                setBooking={setBooking}
-                searchBooking={searchBooking}
-                setSearchBooking={setSearchBooking}
-                updateBooking={updateBooking}
-                setUpdateBooking={setUpdateBooking}
-              />
-            )}
-          </div>
-        )}
-      </Page>
-    </>
+      ) : (
+        <BookingInformation
+          booking={booking}
+          updateBooking={updateBooking}
+          setUpdateBooking={setUpdateBooking}
+          setBookingIsDone={setBookingIsDone}
+        />
+      )}
+    </Page>
   );
 }
