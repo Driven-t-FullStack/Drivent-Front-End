@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Room from './Room';
 
 export default function Rooms({ roomLoading, rooms }) {
+  const [chosenRoomId, setChosenRoomId] = useState(null);
+
   return (
     <Container>
       <h2>Ótima Pedida, Agora escolha seu quarto: </h2>
@@ -10,7 +13,7 @@ export default function Rooms({ roomLoading, rooms }) {
       ) : (
         <RoomsBox>
           {rooms.Rooms.map((room) => (
-            <Room room={room} key={room.id} />
+            <Room room={room} key={room.id} setChosenRoomId={setChosenRoomId} chosenRoomId={chosenRoomId}/>
           ))}
         </RoomsBox>
       )}
