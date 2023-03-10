@@ -13,7 +13,10 @@ export default function BookingRoomFlow() {
   const [chosenRoomId, setChosenRoomId] = useState(null);
   const [showRooms, setShowRooms] = useState(false);
   const [bookingIsDone, setBookingIsDone] = useState(false);
+  const [searchBooking, setSearchBooking] = useState(true);
+  const [updateBooking, setUpdateBooking] = useState(false);
   const [booking, setBooking] = useState(null);
+
   const token = useToken();
 
   useEffect(() => {
@@ -23,13 +26,13 @@ export default function BookingRoomFlow() {
         setBooking(booking);
         setBookingIsDone(true);
       } catch (err) {
+        setBooking(err.name);
         setBookingIsDone(false);
-        console.log(err);
       }
     };
 
     fetchBooking();
-  }, []);
+  }, [searchBooking]);
 
   if (!booking) {
     return <div>Loading...</div>;
@@ -42,7 +45,12 @@ export default function BookingRoomFlow() {
           <h1> Escolha de hotel e quarto </h1>
         </div>
         {bookingIsDone ? (
-          <BookingInformation booking={booking} />
+          <BookingInformation
+            booking={booking}
+            setBookingIsDone={setBookingIsDone}
+            updateBooking={updateBooking}
+            setUpdateBooking={setUpdateBooking}
+          />
         ) : (
           <div>
             <Hotels fetchRooms={fetchRooms} setShowRooms={setShowRooms} setChosenRoomId={setChosenRoomId} />
@@ -53,6 +61,12 @@ export default function BookingRoomFlow() {
                 setChosenRoomId={setChosenRoomId}
                 chosenRoomId={chosenRoomId}
                 setBookingIsDone={setBookingIsDone}
+                booking={booking}
+                setBooking={setBooking}
+                searchBooking={searchBooking}
+                setSearchBooking={setSearchBooking}
+                updateBooking={updateBooking}
+                setUpdateBooking={setUpdateBooking}
               />
             )}
           </div>
