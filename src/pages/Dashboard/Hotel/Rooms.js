@@ -1,9 +1,28 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../../components/Form/Button';
+import useToken from '../../../hooks/useToken';
+import { postRoom } from '../../../services/roomsApi';
 import Room from './Room';
 
-export default function Rooms({ roomLoading, rooms, chosenRoomId, setChosenRoomId }) {
+export default function Rooms({ roomLoading, rooms, chosenRoomId, setChosenRoomId, setBookingIsDone }) {
+  const [loading, setLoading] = useState(false);
+  const token = useToken();
+
+  async function bookRoom() {
+    setLoading(true);
+    const body = { roomId: chosenRoomId };
+    alert(body.roomId);
+    try {
+      await postRoom(body, token);
+      setLoading(false);
+      setBookingIsDone(true);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  }
+
   return (
     <Container>
       <h2>Ótima Pedida, Agora escolha seu quarto: </h2>
@@ -16,7 +35,11 @@ export default function Rooms({ roomLoading, rooms, chosenRoomId, setChosenRoomI
           ))}
         </RoomsBox>
       )}
-      {chosenRoomId !== null && <Button style={{ marginBottom: '125px' }}>Reservar quarto</Button>}
+      {chosenRoomId !== null && (
+        <Button onClick={bookRoom} style={{ marginBottom: '125px' }} disabled={loading}>
+          Reservar quarto
+        </Button>
+      )}
     </Container>
   );
 }

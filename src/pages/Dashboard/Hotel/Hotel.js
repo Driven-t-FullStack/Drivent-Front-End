@@ -13,7 +13,6 @@ export default function Hotel({ hotel, setChosenHotel, chosenHotel, fetchRooms, 
   }
 
   function chooseHotel(hotelId) {
-    hotelId === chosenHotel ? setChosenHotel(null) : setChosenHotel(hotelId);
     if (hotelId === chosenHotel) {
       setShowRooms(false);
       setChosenHotel(null);

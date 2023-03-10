@@ -1,67 +1,39 @@
 import { useState } from 'react';
 import useHotel from '../../../hooks/api/useHotel';
 import useRoom from '../../../hooks/api/useRoom';
-import Hotel from './Hotel';
+import Hotels from './Hotels';
 import Rooms from './Rooms';
-import { NoPayment, Page } from './style';
+import { Page } from './style';
 
-export default function Hotels() {
-  const { hotelLoading, hotelError, hotels } = useHotel();
-  const [chosenHotel, setChosenHotel] = useState(null);
+export default function BookingRoomFlow() {
   const { roomLoading, fetchRooms, rooms } = useRoom();
-  const [showRooms, setShowRooms] = useState(false);
   const [chosenRoomId, setChosenRoomId] = useState(null);
+  const [showRooms, setShowRooms] = useState(false);
+  const [bookingIsDone, setBookingIsDone] = useState(false);
 
-  if (hotelLoading) {
-    return <div>loading</div>;
-  }
-
-  if (hotelError) {
-    return (
+  return (
+    <>
       <Page>
         <div>
           <h1> Escolha de hotel e quarto </h1>
         </div>
-        <NoPayment>
-          <h3>
-            Você precisa ter confirmado pagamento antes <br /> de fazer a escolha de hospedagem{' '}
-          </h3>
-        </NoPayment>
-      </Page>
-    );
-  } else {
-    return (
-      <>
-        <Page>
+        {bookingIsDone ? (
+          ''
+        ) : (
           <div>
-            <h1> Escolha de hotel e quarto </h1>
-          </div>
-          <div>
-            <h2> Primeiro, escolha seu hotel </h2>
-            <div>
-              {hotels?.map((hotel) => (
-                <Hotel
-                  hotel={hotel}
-                  key={hotel.id}
-                  setChosenHotel={setChosenHotel}
-                  chosenHotel={chosenHotel}
-                  fetchRooms={fetchRooms}
-                  setShowRooms={setShowRooms}
-                  setChosenRoomId={setChosenRoomId}
-                />
-              ))}
-            </div>
+            <Hotels fetchRooms={fetchRooms} setShowRooms={setShowRooms} setChosenRoomId={setChosenRoomId} />
             {showRooms && (
               <Rooms
                 rooms={rooms}
                 roomLoading={roomLoading}
                 setChosenRoomId={setChosenRoomId}
                 chosenRoomId={chosenRoomId}
+                setBookingIsDone={setBookingIsDone}
               />
             )}
           </div>
-        </Page>
-      </>
-    );
-  }
+        )}
+      </Page>
+    </>
+  );
 }
