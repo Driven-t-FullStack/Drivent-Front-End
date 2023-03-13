@@ -2,23 +2,38 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../../components/Form/Button';
 import useToken from '../../../hooks/useToken';
-import { postRoom } from '../../../services/bookingApi';
+import { postRoom, putBooking } from '../../../services/bookingApi';
 import Room from './Room';
 
-export default function Rooms({ roomLoading, rooms, chosenRoomId, setChosenRoomId, setBookingIsDone }) {
+export default function Rooms({
+  roomLoading,
+  rooms,
+  chosenRoomId,
+  setChosenRoomId,
+  setBookingIsDone,
+  searchBooking,
+  setSearchBooking,
+  updateBooking,
+  setUpdateBooking,
+  booking,
+}) {
   const [loading, setLoading] = useState(false);
   const token = useToken();
 
-  async function bookRoom() {
+  async function handleBookRoom() {
     setLoading(true);
     const body = { roomId: chosenRoomId };
-    alert(body.roomId);
     try {
-      await postRoom(body, token);
+      if (updateBooking) {
+        await putBooking(body, booking.id, token);
+      } else {
+        await postRoom(body, token);
+      }
       setLoading(false);
-      setBookingIsDone(true);
+      setBookingIsDone(null);
+      setSearchBooking(!searchBooking);
+      setUpdateBooking(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
     }
   }
@@ -36,8 +51,8 @@ export default function Rooms({ roomLoading, rooms, chosenRoomId, setChosenRoomI
         </RoomsBox>
       )}
       {chosenRoomId !== null && (
-        <Button onClick={bookRoom} style={{ marginBottom: '125px' }} disabled={loading}>
-          Reservar quarto
+        <Button onClick={handleBookRoom} style={{ marginBottom: '125px' }} disabled={loading}>
+          {updateBooking ? 'TROCAR QUARTO' : 'RESERVAR QUARTO'}
         </Button>
       )}
     </Container>

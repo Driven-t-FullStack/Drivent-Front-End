@@ -8,7 +8,7 @@ export default function Hotels({ fetchRooms, setShowRooms, setChosenRoomId }) {
   const [chosenHotel, setChosenHotel] = useState(null);
 
   if (hotelLoading) {
-    return <div>loading</div>;
+    return <div>Loading...</div>;
   }
 
   return hotelError ? (

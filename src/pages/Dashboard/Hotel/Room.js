@@ -8,19 +8,23 @@ export default function Room({ room, chosenRoomId, setChosenRoomId }) {
   const roomCapacity = room.capacity;
 
   function produceIcons() {
+    let key = 0;
     const icons = [];
     const availableVacancies = roomCapacity - occupiedVacancies - chosenRoom;
 
     for (let i = 0; i < availableVacancies; i++) {
-      icons.push(<IoPersonOutline />);
+      icons.push(<IoPersonOutline key={key} />);
+      key++;
     }
 
     for (let j = 0; j < chosenRoom; j++) {
-      icons.push(<IoPersonSharp style={{ color: '#FF4791' }} />);
+      icons.push(<IoPersonSharp style={{ color: '#FF4791' }} key={key} />);
+      key++;
     }
 
     for (let k = 0; k < occupiedVacancies; k++) {
-      icons.push(<IoPersonSharp />);
+      icons.push(<IoPersonSharp key={key} />);
+      key++;
     }
 
     return icons;
