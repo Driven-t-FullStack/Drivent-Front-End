@@ -27,7 +27,7 @@ export default function Hotel({ hotel, setChosenHotel, chosenHotel, fetchRooms, 
 
   return (
     <HotelPreview onClick={() => chooseHotel(hotel.id)} isChosen={chosenHotel === hotel.id}>
-      <img src={hotel.img} alt="hotel_picture" />
+      <img src={hotel.image} alt="hotel_picture" />
       <h1> {hotel.name} </h1>
       <h2>Tipos de acomodação: </h2>
       <p>{hotel.type}</p>
