@@ -1,27 +1,15 @@
-import * as activitiesApi from '../../services/activitiesApi'; 
-import { useEffect, useState, useContext } from 'react';
-import UserContext from '../../contexts/UserContext';
+import { getActivities } from '../../services/activitiesApi';
+import useAsync from '../useAsync';
+import useToken from '../useToken';
 
 export default function useActivity() {
-  const [activities, setActivities] = useState(null);
-  const { userData } = useContext(UserContext);
-  const { token } = userData;
+  const token = useToken();
 
-  useEffect(() => {
-    const fetchActivities = async() => {
-      try {
-        const ticket = await activitiesApi.getActivities(token);
-        setActivities(ticket.data);
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      }
-    };
+  const {
+    data: activitiesData,
+    loading: activiesLoading,
+    error: activitiesError,
+  } = useAsync(() => getActivities(token));
 
-    fetchActivities();
-  }, []);
-
-  if (activities !== null) {
-    return activities;
-  }
+  return { activitiesData, activiesLoading, activitiesError };
 }
