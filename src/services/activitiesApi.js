@@ -6,6 +6,16 @@ export async function getActivities(token) {
       Authorization: `Bearer ${token}`,
     },
   });
-  
+
+  return response.data;
+}
+
+export async function getActivitiesBydate(dateId, token) {
+  const response = await api.get(`/activities/${dateId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   return response.data;
 }
