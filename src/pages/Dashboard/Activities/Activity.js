@@ -5,15 +5,19 @@ import { InsideActivity } from './style';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { postUserActivity } from '../../../services/activitiesApi';
 import useToken from '../../../hooks/useToken';
 dayjs.extend(utc);
 
 export default function Activity({ activity, capacity, setUpdate, update }) {
   const [loading, setLoading] = useState(false);
-  const [activityStatus] = useState(determineActivityStatus());
+  const [activityStatus, setActiviesStatus] = useState(determineActivityStatus());
   const token = useToken();
+
+  useEffect(() => {
+    setActiviesStatus(determineActivityStatus());
+  }, [activity]);
 
   function determineActivityStatus() {
     if (activity.isEnrolled) {
