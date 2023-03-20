@@ -8,7 +8,7 @@ export default function ActivitiesContainer({ loading, activities }) {
   if (!activities) {
     return <ActiviesDashBoard>Error..</ActiviesDashBoard>;
   }
-
+  
   return (
     <ActiviesDashBoard>
       {activities.map((hall) => (

@@ -3,9 +3,18 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { InsideActivity } from './style';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { useState } from 'react';
+dayjs.extend(utc);
 
-export default function Activity({ activity }) {
-  const isSold = activity.vacancies === 0;
+export default function Activity({ activity, capacity }) {
+  const [vacancies, setVacancies] = useState(computeVacancies());
+
+  function computeVacancies() {
+    const soldAmount = activity.UserOnActivity.length;
+    const availableVacancies = capacity - soldAmount;
+    return availableVacancies;
+  }
 
   function computeBoxHeight() {
     const diff = dayjs(activity.endTime).diff(dayjs(activity.startTime), 'hours');
@@ -13,8 +22,8 @@ export default function Activity({ activity }) {
   }
 
   function formatTime() {
-    const startTime = dayjs(activity.startTime).format('HH:mm');
-    const endTime = dayjs(activity.endTime).format('HH:mm');
+    const startTime = dayjs(activity.startTime).utc().format('HH:mm');
+    const endTime = dayjs(activity.endTime).utc().format('HH:mm');
 
     return `${startTime} - ${endTime}`;
   }
@@ -26,8 +35,8 @@ export default function Activity({ activity }) {
         <p>{formatTime()} </p>
       </div>
       <div>
-        {isSold ? <CrossCircle style={{ pointerEvents: isSold ? 'none' : '' }} /> : <ExitDoor />}
-        <p> {isSold ? 'Esgotado' : activity.vacancies} </p>
+        {vacancies === 0 ? <CrossCircle style={{ pointerEvents: vacancies === 0 ? 'none' : '' }} /> : <ExitDoor />}
+        <p> {vacancies === 0 ? 'Esgotado' : computeVacancies()} </p>
       </div>
     </InsideActivity>
   );

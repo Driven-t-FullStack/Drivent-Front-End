@@ -1,9 +1,11 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 export default function ActivityDate({ dateActivity, dateId, setDateId, setShowActivities, setLoading }) {
   function formatDate() {
-    const formattedDate = dayjs(dateActivity.date).locale('pt-br').format('dddd, DD/MM').replace('-feira', '');
+    const formattedDate = dayjs(dateActivity.date).utc().locale('pt-br').format('dddd, DD/MM').replace('-feira', '');
 
     return formattedDate;
   }
