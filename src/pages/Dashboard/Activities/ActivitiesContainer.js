@@ -1,7 +1,7 @@
 import Hall from './Hall';
 import { ActiviesDashBoard } from './style';
 
-export default function ActivitiesContainer({ loading, activities }) {
+export default function ActivitiesContainer({ loading, activities, setUpdate, update }) {
   if (loading) {
     return <ActiviesDashBoard>Loading</ActiviesDashBoard>;
   }
@@ -12,7 +12,7 @@ export default function ActivitiesContainer({ loading, activities }) {
   return (
     <ActiviesDashBoard>
       {activities.map((hall) => (
-        <Hall key={hall.id} hall={hall} />
+        <Hall key={hall.id} hall={hall} update={update} setUpdate={setUpdate}/>
       ))}
     </ActiviesDashBoard>
   );

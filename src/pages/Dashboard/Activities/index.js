@@ -13,6 +13,8 @@ export default function Activities() {
   const [showActivities, setShowActivities] = useState(false);
   const [activities, setActivities] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [update, setUpdate] = useState(true);
+
   const token = useToken();
 
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function Activities() {
     if (showActivities) {
       fetchActivitiesBydate();
     }
-  }, [dateId]);
+  }, [dateId, update]);
 
   if (activiesLoading) {
     return <div>Loading...</div>;
@@ -70,7 +72,9 @@ export default function Activities() {
             />
           ))}
         </DataFilter>
-        {showActivities && <ActivitiesContainer loading={loading} activities={activities} />}
+        {showActivities && (
+          <ActivitiesContainer loading={loading} activities={activities} update={update} setUpdate={setUpdate} />
+        )}
       </div>
       {/* )} */}
     </Page>
