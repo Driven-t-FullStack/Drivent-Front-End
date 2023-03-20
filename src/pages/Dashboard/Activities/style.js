@@ -101,7 +101,7 @@ export const InsideActivity = styled.div`
   display: flex;
   width: 100%;
   height: ${(props) => props.boxHeight};
-  background: #f1f1f1;
+  background: ${(props) => (props.activityStatus === 'enrolled' ? '#d0ffdb' : '#f1f1f1')};
   border-radius: 5px;
   > div {
     display: flex;

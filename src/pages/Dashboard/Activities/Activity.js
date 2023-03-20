@@ -1,5 +1,6 @@
 import { GiExitDoor } from 'react-icons/gi';
 import { AiFillCloseCircle } from 'react-icons/ai';
+import { IoCheckmarkCircleOutline } from 'react-icons/io5';
 import { InsideActivity } from './style';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
@@ -10,9 +11,19 @@ import useToken from '../../../hooks/useToken';
 dayjs.extend(utc);
 
 export default function Activity({ activity, capacity, setUpdate, update }) {
-  const [vacancies, setVacancies] = useState(computeVacancies());
   const [loading, setLoading] = useState(false);
+  const [activityStatus] = useState(determineActivityStatus());
   const token = useToken();
+
+  function determineActivityStatus() {
+    if (activity.isEnrolled) {
+      return 'enrolled';
+    } else if (computeVacancies() === 0) {
+      return 'soldout';
+    } else {
+      return 'available';
+    }
+  }
 
   function computeVacancies() {
     const soldAmount = activity.UserOnActivity.length;
@@ -46,18 +57,22 @@ export default function Activity({ activity, capacity, setUpdate, update }) {
   }
 
   return (
-    <InsideActivity boxHeight={computeBoxHeight()} style={{ pointerEvents: loading ? 'none' : '' }}>
+    <InsideActivity
+      boxHeight={computeBoxHeight()}
+      style={{ pointerEvents: loading ? 'none' : '' }}
+      activityStatus={activityStatus}
+    >
       <div>
         <h2> {activity.name} </h2>
         <p>{formatTime()} </p>
       </div>
       <div>
-        {vacancies === 0 ? (
-          <CrossCircle style={{ pointerEvents: vacancies === 0 ? 'none' : '' }} />
-        ) : (
-          <ExitDoor onClick={enrollOnActivity} />
+        {activityStatus === 'enrolled' && <CheckCircle />}
+        {activityStatus === 'soldout' && <CrossCircle />}
+        {activityStatus === 'available' && (
+          <ExitDoor onClick={enrollOnActivity} style={{ pointerEvents: loading ? 'none' : '' }} />
         )}
-        <p> {vacancies === 0 ? 'Esgotado' : computeVacancies()} </p>
+        <p> {activityStatus === 'soldout' ? 'Esgotado' : computeVacancies()} </p>
       </div>
     </InsideActivity>
   );
@@ -71,6 +86,13 @@ const ExitDoor = styled(GiExitDoor)`
 `;
 const CrossCircle = styled(AiFillCloseCircle)`
   color: #cc6666;
+  font-size: 25px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  pointer-events: none;
+`;
+const CheckCircle = styled(IoCheckmarkCircleOutline)`
+  color: #078632;
   font-size: 25px;
   margin-bottom: 5px;
   cursor: pointer;
